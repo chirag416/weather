@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
-import { TextField, List, ListItemButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, List, ListItemButton, Typography, Button } from '@mui/material';
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
-const SearchBar = ({ onCitySelect }) => {
+const SearchBar = ({ onCitySelect, onRemoveFavorite, favorites, selectedCity }) => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    if (query) {
+      fetchSuggestions(query);
+    } else {
+      setSuggestions([]);
+    }
+  }, [query]);
+
+  useEffect(() => {
+    if (selectedCity) {
+      setQuery(''); // Clear the query when a city is selected
+      setSuggestions([]); // Clear the suggestions
+    }
+  }, [selectedCity]);
 
   const fetchSuggestions = async (query) => {
     try {
@@ -19,17 +34,20 @@ const SearchBar = ({ onCitySelect }) => {
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
-    if (e.target.value) {
-      fetchSuggestions(e.target.value);
-    } else {
-      setSuggestions([]);
-    }
   };
 
   const handleCitySelect = (city) => {
     onCitySelect(city);
-    setQuery(city.name + ', ' + city.region + ', ' + city.country);  // Set the search input to the selected city
-    setSuggestions([]);  // Clear the suggestions
+    setQuery(''); // Clear the query field
+    setSuggestions([]); // Clear the suggestions
+  };
+
+  const isFavorite = (city) => {
+    return favorites.some(fav => fav.name === city.name && fav.region === city.region && fav.country === city.country);
+  };
+
+  const handleRemoveFavoriteClick = (city) => {
+    onRemoveFavorite(city);
   };
 
   return (
@@ -40,13 +58,57 @@ const SearchBar = ({ onCitySelect }) => {
         onChange={handleInputChange}
         fullWidth
       />
-      <List>
-        {suggestions.map((city, index) => (
-          <ListItemButton key={index} onClick={() => handleCitySelect(city)}>
-            {city.name}, {city.region}, {city.country}
-          </ListItemButton>
-        ))}
-      </List>
+      {query === '' && favorites.length > 0 && (
+        <div>
+          <Typography variant="h6">Favorite Cities</Typography>
+          <List>
+            {favorites.map((city, index) => (
+              <ListItemButton
+                key={index}
+                onClick={() => handleCitySelect(city)}
+              >
+                {city.name}, {city.region}, {city.country}
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent the city select from being triggered
+                    handleRemoveFavoriteClick(city);
+                  }}
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ ml: 2 }}
+                >
+                  Remove
+                </Button>
+              </ListItemButton>
+            ))}
+          </List>
+        </div>
+      )}
+      {suggestions.length > 0 && query !== '' && (
+        <List>
+          {suggestions.map((city, index) => (
+            <ListItemButton
+              key={index}
+              onClick={() => handleCitySelect(city)}
+            >
+              {city.name}, {city.region}, {city.country}
+              {isFavorite(city) && (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent the city select from being triggered
+                    handleRemoveFavoriteClick(city);
+                  }}
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ ml: 2 }}
+                >
+                  Remove
+                </Button>
+              )}
+            </ListItemButton>
+          ))}
+        </List>
+      )}
     </div>
   );
 };

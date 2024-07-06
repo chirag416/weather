@@ -11,15 +11,22 @@ const App = () => {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
       setIsLoggedIn(true);
     }
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
   }, []);
 
   const handleCitySelect = async (city) => {
+    setSelectedCity(city);
     const weatherData = await getWeather(city.name);
     setWeather(weatherData.data);
 
@@ -35,6 +42,18 @@ const App = () => {
     setIsLoggedIn(false);
   };
 
+  const addFavorite = (city) => {
+    const updatedFavorites = [...favorites, city];
+    setFavorites(updatedFavorites);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  };
+
+  const removeFavorite = (city) => {
+    const updatedFavorites = favorites.filter(fav => fav.name !== city.name);
+    setFavorites(updatedFavorites);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  };
+
   return (
     <Container>
       <Typography variant="h2" gutterBottom>
@@ -43,9 +62,29 @@ const App = () => {
       {isLoggedIn ? (
         <>
           <LogoutButton onLogout={handleLogout} />
-          <SearchBar onCitySelect={handleCitySelect} />
-          {weather && <CurrentWeather weather={weather} />}
-          {forecast && <Forecast forecast={forecast} />}
+          <SearchBar 
+            onCitySelect={handleCitySelect} 
+            onAddFavorite={addFavorite} 
+            onRemoveFavorite={removeFavorite} 
+            favorites={favorites} 
+          />
+          {weather && (
+            <CurrentWeather 
+              weather={weather} 
+              onAddFavorite={addFavorite} 
+              onRemoveFavorite={removeFavorite} 
+              favorites={favorites} 
+            />
+          )}
+          {forecast && selectedCity && (
+            <Forecast 
+              forecast={forecast} 
+              city={selectedCity} 
+              onAddFavorite={addFavorite} 
+              onRemoveFavorite={removeFavorite} 
+              favorites={favorites} 
+            />
+          )}
         </>
       ) : (
         <Login onLogin={handleLogin} />
