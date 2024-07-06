@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Container, Typography } from '@mui/material';
+import SearchBar from './components/SearchBar';
+import CurrentWeather from './components/CurrentWeather';
+import Forecast from './components/Forecast';
+import { getWeather, getForecast } from './services/weatherService';
 
-function App() {
+const App = () => {
+  const [weather, setWeather] = useState(null);
+  const [forecast, setForecast] = useState(null);
+
+  const handleCitySelect = async (city) => {
+    const weatherData = await getWeather(city.name);
+    setWeather(weatherData.data);
+
+    const forecastData = await getForecast(city.name);
+    setForecast(forecastData.data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Typography variant="h2" gutterBottom>
+        Weather Dashboard
+      </Typography>
+      <SearchBar onCitySelect={handleCitySelect} />
+      {weather && <CurrentWeather weather={weather} />}
+      {forecast && <Forecast forecast={forecast} />}
+    </Container>
   );
-}
+};
 
 export default App;
