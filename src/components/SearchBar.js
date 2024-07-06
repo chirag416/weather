@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, List, ListItem } from '@mui/material';
+import { TextField, List, ListItemButton } from '@mui/material';
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
@@ -42,9 +42,9 @@ const SearchBar = ({ onCitySelect }) => {
       />
       <List>
         {suggestions.map((city, index) => (
-          <ListItem key={index} button onClick={() => handleCitySelect(city)}>
+          <ListItemButton key={index} onClick={() => handleCitySelect(city)}>
             {city.name}, {city.region}, {city.country}
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
     </div>
