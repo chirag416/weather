@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# Weather Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React-based weather dashboard application that allows users to search for and view weather information for different cities. Users can log in, add cities to their favorites, and view current weather and a 7-day forecast. The application uses Material-UI for styling and Axios for API requests.
+### Components
 
-## Available Scripts
+- **SearchBar.js**: Allows users to search for cities and view suggestions.
+- **CurrentWeather.js**: Displays current weather information for the selected city.
+- **Forecast.js**: Shows a 7-day weather forecast for the selected city.
+- **Login.js**: Manages user login.
+- **LogoutButton.js**: Button for logging out the user.
+- **TemperatureChart.js**: Displays temperature data in a chart format.
 
-In the project directory, you can run:
+### Services
 
-### `npm start`
+- **weatherService.js**: Contains functions to fetch weather data from the WeatherAPI.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Setup Instructions
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+- Node.js and npm installed on your machine.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation
 
-### `npm run build`
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/chirag416/weather.git
+    cd weather
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Set up your environment variables**:
+    - Create a `.env` file in the root of the project.
+    - Add your WeatherAPI key:
+        ```env
+        REACT_APP_WEATHER_API_KEY= "your api key"
+        ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Running the Application
 
-### `npm run eject`
+1. **Start the development server**:
+    ```bash
+    npm start
+    ```
+    This will start the application on `http://localhost:3000`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Features
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **User Authentication**: Users can log in and log out. Authentication state is persisted using `localStorage`.
+- **Search for Cities**: Users can search for cities and view weather suggestions.
+- **View Weather Information**: Users can view current weather and a 7-day forecast for selected cities.
+- **Favorites**: Users can add cities to their favorites and quickly access weather information for those cities.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Log in**: Use the login form to log into the application.
+2. **Search for a city**: Use the search bar to find a city.
+3. **View weather information**: Click on a city to view its current weather and 7-day forecast.
+4. **Add to favorites**: Click the "Add to Favorites" button to save the city to your favorites.
+5. **Remove from favorites**: Click the "Remove from Favorites" button to remove the city from your favorites.
+6. **Log out**: Use the logout button to log out of the application.
 
-## Learn More
+## Notes
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Ensure that all API requests are made over HTTPS to avoid mixed content issues.
