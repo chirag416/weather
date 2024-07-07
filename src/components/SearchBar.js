@@ -25,7 +25,7 @@ const SearchBar = ({ onCitySelect, onRemoveFavorite, favorites, selectedCity }) 
 
   const fetchSuggestions = async (query) => {
     try {
-      const response = await axios.get(`http://api.weatherapi.com/v1/search.json?key=${API_KEY}&q=${query}`);
+      const response = await axios.get(`https://api.weatherapi.com/v1/search.json?key=${API_KEY}&q=${query}`);
       setSuggestions(response.data);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
