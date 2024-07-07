@@ -43,6 +43,8 @@ const Forecast = ({ forecast }) => {
   };
 
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true
@@ -72,7 +74,9 @@ const Forecast = ({ forecast }) => {
     <Card>
       <CardContent>
         <Typography variant="h5">7-Day Forecast</Typography>
-        <Line data={data} options={options} />
+        <div style={{ width: '100%', height: '400px' }}>
+          <Line data={data} options={options} />
+        </div>
       </CardContent>
     </Card>
   );
